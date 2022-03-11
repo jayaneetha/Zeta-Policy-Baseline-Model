@@ -9,11 +9,11 @@ RESULTS_ROOT = '/results'
 
 if host == 'asimov':
     DATA_ROOT = '/home/u1116888/projects/iemocap_dataset/h5_data'
-    RESULTS_ROOT = '/home/u1116888/projects/Zeta-Policy/rl-files'
+    RESULTS_ROOT = '/home/u1116888/projects/ZetaPolicyBaselineModel/results'
 
 if host == 'Thejans-MacBook-Pro.local':
     DATA_ROOT = '/Users/jayaneetha/Research/PycharmProjects/iemocap_dataset/pkl'
-    RESULTS_ROOT = '/Users/jayaneetha/Research/PycharmProjects/Zeta-Policy/rl-files'
+    RESULTS_ROOT = '/Users/jayaneetha/Research/PycharmProjects/ZetaPolicyBaselineModel/results'
 
 if host == 'Thejans-MacBook-Pro-13.local':
     DATA_ROOT = '/Users/jayaneetha/PycharmProjects/iemocap_dataset/pkl'
