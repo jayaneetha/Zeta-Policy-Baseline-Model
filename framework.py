@@ -1,13 +1,14 @@
 import datetime
 import logging
+import os
 import pickle
 import sys
 from os import path
 
 import h5py
 import numpy as np
-import os
 import tensorflow as tf
+from tensorflow.keras.callbacks import CSVLogger
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
 from constants import DATA_ROOT
@@ -79,6 +80,7 @@ def train(model, x, y, epochs, batch_size=4, log_base_dir='./logs'):
     print("Start Training")
     log_dir = log_base_dir + "/" + model.name + "_" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
+    csvlogger_callback = CSVLogger(f"{log_base_dir}/{model.name}.csv", append=True)
 
     callback_list = [
         EarlyStopping(
@@ -93,7 +95,9 @@ def train(model, x, y, epochs, batch_size=4, log_base_dir='./logs'):
             save_best_only='True',
             verbose=1,
             mode='max'
-        ), tensorboard_callback]
+        ),
+        tensorboard_callback,
+        csvlogger_callback]
 
     history = model.fit(x, y,
                         batch_size=batch_size, epochs=epochs,
