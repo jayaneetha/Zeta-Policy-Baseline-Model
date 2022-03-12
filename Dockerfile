@@ -9,7 +9,6 @@ RUN pip install -r requirements.txt
 
 COPY *.py ./
 
-RUN sudo chown -R user rl
 RUN sudo chown user *.py
 
 
