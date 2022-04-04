@@ -1,7 +1,7 @@
 import argparse
-import os
 from datetime import datetime
 
+import os
 import tensorflow as tf
 from tensorflow.keras import Input
 from tensorflow.keras import Model
@@ -37,6 +37,7 @@ def main():
                                  DataVersions.COMBINED])
     parser.add_argument('--gpu', type=int, default=1)
     parser.add_argument('--save', type=str2bool, default=False)
+    parser.add_argument('--model-load-file', type=str, required=False, default=None)
 
     args = parser.parse_args()
 
@@ -95,6 +96,9 @@ def main():
 
     model: Model = models.get_model_9_rl(input_layer, model_name_prefix='mfcc')
     model.compile(optimizer=Adam(learning_rate=.00025), metrics=['mae', 'accuracy'], loss=args.loss)
+
+    if args.model_load_file is not None:
+        model: Model = tf.keras.models.load_model('args.model_load_file')
 
     pre_train_datastore: Datastore = None
     if args.pre_train:
@@ -162,7 +166,7 @@ def main():
         model_dir = f'{RESULTS_ROOT}/{time_str}/model'
         if not os.path.exists(model_dir):
             os.makedirs(model_dir)
-        model.save(f"{model_dir}/{model.name}")
+        model.save(f"{model_dir}/{model.name}.h5")
 
 
 if __name__ == "__main__":
