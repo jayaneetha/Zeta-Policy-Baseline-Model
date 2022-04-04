@@ -98,7 +98,7 @@ def main():
     model.compile(optimizer=Adam(learning_rate=.00025), metrics=['mae', 'accuracy'], loss=args.loss)
 
     if args.model_load_file is not None:
-        model: Model = tf.keras.models.load_model('args.model_load_file')
+        model: Model = tf.keras.models.load_model(args.model_load_file)
 
     pre_train_datastore: Datastore = None
     if args.pre_train:
