@@ -9,7 +9,7 @@ from constants import EMOTIONS
 # ****************************** RL MODELS ******************************
 
 
-def get_model_9_rl(input_layer, model_name_prefix=''):
+def get_model_9_rl(input_layer, model_name_prefix='') -> Model:
     c1 = Conv2D(5, kernel_size=8, padding='same', activation='relu')(input_layer)
     bn1 = BatchNormalization()(c1)
 

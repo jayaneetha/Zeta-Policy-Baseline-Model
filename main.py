@@ -1,9 +1,10 @@
 import argparse
+import os
 from datetime import datetime
 
-import os
 import tensorflow as tf
 from tensorflow.keras import Input
+from tensorflow.keras import Model
 from tensorflow.keras.optimizers import Adam
 
 import models
@@ -23,6 +24,7 @@ def main():
                         type=str2dataset, default=DataVersions.IEMOCAP)
     parser.add_argument('--data-split', nargs='+', type=float, default=None)
     parser.add_argument('--train-epochs', type=int, default=128)
+    parser.add_argument('--loss', type=str, default='mse', choices=['mse', 'categorical_crossentropy', 'poisson'])
     parser.add_argument('--pre-train', type=str2bool, default=False)
     parser.add_argument('--pre-train-dataset',
                         choices=[DataVersions.IEMOCAP, DataVersions.IMPROV, DataVersions.SAVEE, DataVersions.ESD],
@@ -34,6 +36,8 @@ def main():
                         choices=[DataVersions.IEMOCAP, DataVersions.IMPROV, DataVersions.SAVEE, DataVersions.ESD,
                                  DataVersions.COMBINED])
     parser.add_argument('--gpu', type=int, default=1)
+    parser.add_argument('--save', type=str2bool, default=False)
+
     args = parser.parse_args()
 
     for k in args.__dict__.keys():
@@ -89,8 +93,8 @@ def main():
 
     input_layer = Input(shape=(1, NUM_MFCC, NO_features))
 
-    model = models.get_model_9_rl(input_layer, model_name_prefix='mfcc')
-    model.compile(optimizer=Adam(learning_rate=.00025), metrics=['mae', 'accuracy'], loss='mse')
+    model: Model = models.get_model_9_rl(input_layer, model_name_prefix='mfcc')
+    model.compile(optimizer=Adam(learning_rate=.00025), metrics=['mae', 'accuracy'], loss=args.loss)
 
     pre_train_datastore: Datastore = None
     if args.pre_train:
@@ -153,6 +157,12 @@ def main():
     print(f"Test\n\t Accuracy: {test_acc}")
     store_results(f"{log_dir}/results.txt", args=args, experiment="", time_str=time_str,
                   test_loss=test_loss, test_acc=test_acc)
+
+    if args.save:
+        model_dir = f'{RESULTS_ROOT}/{time_str}/model'
+        if not os.path.exists(model_dir):
+            os.makedirs(model_dir)
+        model.save(f"{model_dir}/{model.name}")
 
 
 if __name__ == "__main__":
