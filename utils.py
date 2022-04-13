@@ -30,6 +30,8 @@ def str2dataset(v) -> DataVersions:
         return DataVersions.ESD
     if ds == 'combined':
         return DataVersions.COMBINED
+    if ds == 'emodb':
+        return DataVersions.EMODB
 
 
 def get_datastore(data_version: DataVersions, feature_type: FeatureType = FeatureType.MFCC,
@@ -41,6 +43,10 @@ def get_datastore(data_version: DataVersions, feature_type: FeatureType = Featur
     if data_version == DataVersions.ESD:
         from datastore_esd import ESDDatastore
         return ESDDatastore(feature_type, custom_split)
+
+    if data_version == DataVersions.EMODB:
+        from datastore_emodb import EmoDBDatastore
+        return EmoDBDatastore(feature_type, custom_split)
 
     if data_version == DataVersions.IMPROV:
         from datastore_improv import ImprovDatastore
