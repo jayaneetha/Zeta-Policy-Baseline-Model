@@ -41,6 +41,8 @@ def main():
     parser.add_argument('--gpu', type=int, default=1)
     parser.add_argument('--save', type=str2bool, default=False)
     parser.add_argument('--model-load-file', type=str, required=False, default=None)
+    parser.add_argument('--schedule-csv', type=str, default=None)
+    parser.add_argument('--schedule-idx', type=int, default=None)
 
     args = parser.parse_args()
 
@@ -170,6 +172,10 @@ def main():
         if not os.path.exists(model_dir):
             os.makedirs(model_dir)
         model.save(f"{model_dir}/{model.name}.h5")
+
+    if args.schedule_csv is not None:
+        from scheduler_callback import callback
+        callback(args.schedule_csv, args.schedule_idx)
 
 
 if __name__ == "__main__":
