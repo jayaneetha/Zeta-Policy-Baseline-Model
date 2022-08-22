@@ -1,7 +1,7 @@
 import argparse
+import os
 from datetime import datetime
 
-import os
 import tensorflow as tf
 from tensorflow.keras import Input
 from tensorflow.keras import Model
@@ -43,6 +43,7 @@ def main():
     parser.add_argument('--model-load-file', type=str, required=False, default=None)
     parser.add_argument('--schedule-csv', type=str, default=None)
     parser.add_argument('--schedule-idx', type=int, default=None)
+    parser.add_argument('--real-world', type=str2bool, default=False)
 
     args = parser.parse_args()
 
@@ -130,17 +131,20 @@ def main():
         model = pre_trained_model
 
     # Training
-    train_log_dir = f'{log_dir}/train'
-    if not os.path.exists(train_log_dir):
-        os.makedirs(train_log_dir)
+    if not args.real_world:
+        train_log_dir = f'{log_dir}/train'
+        if not os.path.exists(train_log_dir):
+            os.makedirs(train_log_dir)
 
-    (x_train, y_train, y_gen_train), _ = target_datastore.get_data()
-    history, model = train(x=x_train.reshape((len(x_train), 1, NUM_MFCC, NO_features)),
-                           y=y_train,
-                           model=model,
-                           epochs=args.train_epochs,
-                           log_base_dir=train_log_dir,
-                           batch_size=batch_size)
+        (x_train, y_train, y_gen_train), _ = target_datastore.get_data()
+        history, model = train(x=x_train.reshape((len(x_train), 1, NUM_MFCC, NO_features)),
+                               y=y_train,
+                               model=model,
+                               epochs=args.train_epochs,
+                               log_base_dir=train_log_dir,
+                               batch_size=batch_size)
+    else:
+        print("REAL WORLD SCENARIO. No TRAINING")
 
     # Testing with Labelled Data
     testing_dataset = args.testing_dataset

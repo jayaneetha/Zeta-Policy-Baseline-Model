@@ -21,7 +21,7 @@ class ImprovDatastore(Datastore):
             mfcc = read_hdf5(f"{DATA_ROOT}/{base_h5_file}", "mfcc")
             emotion_one_hot = read_hdf5(f"{DATA_ROOT}/{base_h5_file}", "emotion_one_hot")
 
-            training_count = int((len(mfcc) * custom_split))
+            training_count = int((len(mfcc) * custom_split)) if int((len(mfcc) * custom_split)) > 0 else 2
             self.train_mfcc = mfcc[:training_count]
             self.train_emotion = emotion_one_hot[:training_count]
             self.target_mfcc = mfcc[training_count:]
