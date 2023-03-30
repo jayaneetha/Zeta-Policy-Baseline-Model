@@ -4,12 +4,14 @@ from feature_type import FeatureType
 from framework import read_hdf5
 
 
-class ImprovDatastore(Datastore):
-    def __init__(self, feature_type: FeatureType, custom_split: float = None):
+class KitchenESDDatastore(Datastore):
+    def __init__(self, feature_type: FeatureType, custom_split: float = None, background_noise_db=None):
         if not (FeatureType.MFCC == feature_type):
             raise Exception("Only supports {}".format(FeatureType.MFCC.name))
-
-        base_h5_file = "vltp_noised_balanced_mspimprov.h5"
+        if background_noise_db is None:
+            base_h5_file = "kitchen_bg_vltp_noised_balanced_esd.h5"
+        else:
+            base_h5_file = f"kitchen_bg_db{background_noise_db}_vltp_noised_balanced_esd.h5"
 
         if custom_split is None:
             self.train_mfcc = read_hdf5(f"{DATA_ROOT}/train_{base_h5_file}", "mfcc")
@@ -20,8 +22,9 @@ class ImprovDatastore(Datastore):
             assert 0 < custom_split < 1
             mfcc = read_hdf5(f"{DATA_ROOT}/{base_h5_file}", "mfcc")
             emotion_one_hot = read_hdf5(f"{DATA_ROOT}/{base_h5_file}", "emotion_one_hot")
+            # emotion = read_hdf5(f"{DATA_ROOT}/{base_h5_file}", "emotion")
 
-            training_count = int((len(mfcc) * custom_split)) if int((len(mfcc) * custom_split)) > 0 else 2
+            training_count = int((len(mfcc) * custom_split))
             self.train_mfcc = mfcc[:training_count]
             self.train_emotion = emotion_one_hot[:training_count]
             self.target_mfcc = mfcc[training_count:]

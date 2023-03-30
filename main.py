@@ -21,7 +21,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data-version', nargs='+',
                         choices=[DataVersions.IEMOCAP, DataVersions.SAVEE, DataVersions.IMPROV, DataVersions.ESD,
-                                 DataVersions.EMODB],
+                                 DataVersions.EMODB, DataVersions.KITCHEN_EMODB, DataVersions.KITCHEN_ESD],
                         type=str2dataset, default=DataVersions.IEMOCAP)
     parser.add_argument('--data-split', nargs='+', type=float, default=None)
     parser.add_argument('--train-epochs', type=int, default=128)
@@ -29,15 +29,15 @@ def main():
     parser.add_argument('--pre-train', type=str2bool, default=False)
     parser.add_argument('--pre-train-dataset',
                         choices=[DataVersions.IEMOCAP, DataVersions.IMPROV, DataVersions.SAVEE, DataVersions.ESD,
-                                 DataVersions.EMODB],
+                                 DataVersions.EMODB, DataVersions.KITCHEN_EMODB, DataVersions.KITCHEN_ESD],
                         type=str2dataset,
                         default=DataVersions.IEMOCAP)
     parser.add_argument('--pre-train-data-split', type=float, default=None)
     parser.add_argument('--pre-train-epochs', type=int, default=64)
     parser.add_argument('--testing-dataset', type=str2dataset, default=None,
                         choices=[DataVersions.IEMOCAP, DataVersions.IMPROV, DataVersions.SAVEE, DataVersions.ESD,
-                                 DataVersions.EMODB,
-                                 DataVersions.COMBINED])
+                                 DataVersions.EMODB, DataVersions.COMBINED, DataVersions.KITCHEN_EMODB,
+                                 DataVersions.KITCHEN_ESD])
     parser.add_argument('--gpu', type=int, default=1)
     parser.add_argument('--save', type=str2bool, default=False)
     parser.add_argument('--model-load-file', type=str, required=False, default=None)

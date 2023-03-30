@@ -32,6 +32,10 @@ def str2dataset(v) -> DataVersions:
         return DataVersions.COMBINED
     if ds == 'emodb':
         return DataVersions.EMODB
+    if ds == 'kitchen_ESD':
+        return DataVersions.KITCHEN_ESD
+    if ds == 'kitchen_EmoDB':
+        return DataVersions.KITCHEN_EMODB
 
 
 def get_datastore(data_version: DataVersions, feature_type: FeatureType = FeatureType.MFCC,
@@ -51,6 +55,14 @@ def get_datastore(data_version: DataVersions, feature_type: FeatureType = Featur
     if data_version == DataVersions.IMPROV:
         from datastore_improv import ImprovDatastore
         return ImprovDatastore(feature_type, custom_split)
+
+    if data_version == DataVersions.KITCHEN_ESD:
+        from datastore_esd_kitchen import KitchenESDDatastore
+        return KitchenESDDatastore(feature_type, custom_split)
+
+    if data_version == DataVersions.KITCHEN_EMODB:
+        from datastore_emodb_kitchen import KitchenEmoDBDatastore
+        return KitchenEmoDBDatastore(feature_type, custom_split)
 
     raise NotImplementedError(data_version)
 

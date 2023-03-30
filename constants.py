@@ -21,9 +21,11 @@ if host == 'Thejans-MacBook-Pro-13.local':
 
 if host == 'Thejans-Servian-MacBook-Pro.local':
     # DATA_ROOT = '/Volumes/Research/PycharmProjects/iemocap_dataset/pkl'
-    DATA_ROOT = '/Volumes/New Volume/pkl'
+    # DATA_ROOT = '/Volumes/New Volume/pkl'
     # DATA_ROOT = '/Users/thejanrajapakshe/Research/PycharmProjects/TAC_RL_DA_analysis/data'
-    RESULTS_ROOT = '/Users/thejanrajapakshe/Research/PycharmProjects/ZetaPolicyBaselineModel/results'
+    RESULTS_ROOT = '/Users/thejanrajapakshe/PyCharmProjects/ZetaPolicyBaselineModel/results'
+    DATA_ROOT = '/Users/thejanrajapakshe/PyCharmProjects/Zeta-Policy/pkl'
+    # RESULTS_ROOT = '/Users/thejanrajapakshe/PyCharmProjects/Zeta-Policy/rl-files'
 
 EMOTIONS = ['hap', 'sad', 'ang', 'neu']
 GENDERS = ['M', 'F']
