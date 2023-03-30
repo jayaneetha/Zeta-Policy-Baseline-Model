@@ -32,9 +32,9 @@ def str2dataset(v) -> DataVersions:
         return DataVersions.COMBINED
     if ds == 'emodb':
         return DataVersions.EMODB
-    if ds == 'kitchen_ESD':
+    if ds == 'kitchen_esd':
         return DataVersions.KITCHEN_ESD
-    if ds == 'kitchen_EmoDB':
+    if ds == 'kitchen_emodb':
         return DataVersions.KITCHEN_EMODB
 
 
